@@ -1,0 +1,24 @@
+#id {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 10px 30px;
+}
+
+main {
+    margin: 10px 10%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+textarea {
+    height: 300px;
+    margin-bottom: 10px;
+}

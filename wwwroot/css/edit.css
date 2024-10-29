@@ -1,0 +1,47 @@
+form {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.05);
+    text-align: center;
+    padding: 10px;
+}
+
+.infos__head {
+    text-align: center;
+    margin: auto;
+}
+
+.infos__head > *, .infos__body > * {
+    display: inline-block;
+    width: 300px;
+}
+
+.infos__body > div {
+
+    display: inline-flex;
+}
+
+form > hr {
+    height: 2px;
+    width: 50%;
+}
+
+form > button {
+    margin-top: 20px;
+}
+
+#state {
+    width: 300px;
+    margin: auto;
+}
+
+input[type="checkbox"] {
+    margin: auto;
+    height: 20px;
+    width: 20px;
+}
+
+input[name="id"]{
+    width: 500px;
+    margin: 5px auto;
+}

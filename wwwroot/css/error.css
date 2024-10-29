@@ -1,0 +1,11 @@
+﻿h1 {
+    font-family: "Top secret", sans-serif;
+    font-size: 120px;
+    color: red;
+    rotate: 2deg;
+}
+
+main > p {
+    font-size: 20px;
+    text-align: center;
+}

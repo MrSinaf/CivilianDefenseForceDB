@@ -1,0 +1,26 @@
+main {
+    padding: 10px;
+}
+
+table {
+    width: 75%;
+    margin: auto;
+}
+
+thead {
+    background: var(--color-secondary);
+    text-transform: uppercase;
+}
+
+tr {
+    height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+td {
+    text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.1);
+}

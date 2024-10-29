@@ -1,0 +1,27 @@
+﻿main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-height: 100vh;
+    padding: 10px;
+}
+
+img {
+    margin: 0 auto 50px auto;
+    width: 500px;
+    height: 500px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+form > * {
+    width: 100%;
+    margin: 5px 0;
+}

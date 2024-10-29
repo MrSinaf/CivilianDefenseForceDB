@@ -1,0 +1,48 @@
+﻿@model IEnumerable<UserModel>
+
+@{
+    ViewData["Title"] = "CDF";
+}
+
+@section Head
+{
+    <link rel="stylesheet" href="/css/home.css" asp-append-version="true"/>
+}
+
+@section Nav
+{
+    <form id="search" asp-controller="Users" asp-action="Members" method="get">
+        <input type="text" name="name" placeholder="Recherche par nom" value="@ViewBag.name" autocomplete="off"/>
+        <input type="text" name="corporation" placeholder="Recherche par corporation" value="@ViewBag.corporation" autocomplete="off"/>
+        <select name="isAdmin">
+            <option value="-1" selected="@(ViewBag.isAdmin == -1 ? "selected" : null)">Tous</option>
+            <option value="1" selected="@(ViewBag.isAdmin == 1 ? "selected" : null)">Admin</option>
+            <option value="0" selected="@(ViewBag.isAdmin == 0 ? "selected" : null)">Membre</option>
+        </select>
+        <button type="submit">Rechercher</button>
+    </form>
+}
+
+<main>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Corporation</th>
+            <th>Admin</th>
+            <th>Dossier</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.name</td>
+                <td>@user.corporation</td>
+                <td>@(user.isAdmin ? "oui" : "non")</td>
+                <td><a asp-controller="Users" asp-action="Profil" asp-route-id="@user.id">Voir</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</main>

@@ -1,0 +1,48 @@
+﻿@model UserModel
+@{
+    var create = Model.id == 0;
+}
+
+@section Head
+{
+    <link rel="stylesheet" href="/css/edit.css" asp-append-version="true"/>
+}
+
+@section Nav
+{
+    <header>
+        <h1>@(create ? "Création" : "Modification") d'un dossier</h1>
+    </header>
+}
+
+<main>
+    @if (!create)
+    {
+        <p class="id">@($"{Model.id:CDF-###-####}")</p>
+    }
+    <form method="post" asp-controller="Users" asp-action="@(create ? "Create" : "Edit")">
+        <input type="hidden" name="id" value="@Model.id" required/>
+        <div class="infos__head">
+            <label for="name">Nom</label>
+            <label for="corporation">Corporation</label>
+            <label for="divers">Divers</label>
+            <label for="isWanted">Recherché ?</label>
+        </div>
+        <div class="infos__body">
+            <input type="text" name="name" id="name" value="@Model.name" required/>
+            <input type="text" name="corporation" id="corporation" value="@Model.corporation" required/>
+            <input type="text" name="divers" id="divers" value="@Model.divers"/>
+            <div>
+                <input type="number" name="wantedScore" id="wantedScore" value="@(Model.wantedScore == 0 ? "" : Model.wantedScore)"/>
+                <input type="checkbox" name="isWanted" id="isWanted" value="true" @(Model.isWanted ? "checked" : "")/>
+            </div>
+        </div>
+        <select name="state" id="state">
+            <option value="1" selected="@((int)Model.state == 1 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Neutral)</option>
+            <option value="0" selected="@((int)Model.state == 0 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Ally)</option>
+            <option value="2" selected="@((int)Model.state == 2 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Hostile)</option>
+        </select>
+        <hr/>
+        <button type="submit">Soumettre</button>
+    </form>
+</main>
