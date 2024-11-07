@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using DataBaseCDF.Models;
 using DataBaseCDF.Services;
@@ -11,13 +12,20 @@ public class UsersController : Controller
 {
     public async Task<IActionResult> Index(string name = "", string corporation = "", int state = -1, int page = 1)
     {
+        page--;
+        const int userPerPage = 30;
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
-        // TODO : Ajouter une limite :
-        await using var cmd = new MySqlCommand("SELECT id, name, state, corporation, wanted FROM users WHERE name LIKE @name AND corporation LIKE @corporation AND "
+        await using var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE name LIKE @name AND corporation LIKE @corporation AND "
                                                + "(@state > 2 OR @state < 0 OR state = @state);", connection);
         cmd.Parameters.AddWithValue("name", $"%{name}%");
         cmd.Parameters.AddWithValue("corporation", $"%{corporation}%");
         cmd.Parameters.AddWithValue("state", state);
+        var nUsers = (long)(await cmd.ExecuteScalarAsync() ?? 0);
+        var nPages = (int)MathF.Ceiling(1f * nUsers / userPerPage);
+        page = page < 0 ? 0 : page > nPages ? nPages : page;
+        
+        cmd.CommandText = "SELECT id, name, state, corporation, wanted FROM users WHERE name LIKE @name AND corporation LIKE @corporation AND " + 
+                          $"(@state > 2 OR @state < 0 OR state = @state) ORDER BY last_update DESC LIMIT {userPerPage} OFFSET {page * userPerPage};";
         await using var reader = await cmd.ExecuteReaderAsync();
 
         var list = new List<UserModel>();
@@ -36,6 +44,9 @@ public class UsersController : Controller
         ViewBag.name = name;
         ViewBag.state = state;
         ViewBag.corporation = corporation;
+        ViewBag.page = page + 1;
+        ViewBag.nPages = nPages;
+        ViewBag.nUsers = nUsers;
         return View(list);
     }
 
@@ -43,7 +54,7 @@ public class UsersController : Controller
     public async Task<IActionResult> Profil(int id)
     {
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
-        await using var cmd = new MySqlCommand("SELECT message, authorID FROM criminal_record WHERE targetID = @id ORDER BY id DESC;", connection);
+        await using var cmd = new MySqlCommand("SELECT message, author FROM criminal_records WHERE target = @id ORDER BY id DESC;", connection);
         cmd.Parameters.AddWithValue("id", id);
         var folders = new List<Folder>();
         await using (var readerFolder = await cmd.ExecuteReaderAsync())
@@ -75,7 +86,7 @@ public class UsersController : Controller
                 folders = folders.ToArray(),
                 isWanted = reader.GetBoolean(6),
                 wantedScore = reader.GetInt32(7),
-                agentId = reader.GetString(8),
+                agentId = reader.GetInt32(8),
                 isMember = isMember
             });
         }
@@ -94,7 +105,7 @@ public class UsersController : Controller
     public async Task<IActionResult> Report(string id, string message)
     {
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
-        await using var cmd = new MySqlCommand("INSERT INTO criminal_record (targetID, message, authorID) VALUES (@target, @message, @author);", connection);
+        await using var cmd = new MySqlCommand("INSERT INTO criminal_records (target, message, author) VALUES (@target, @message, @author);", connection);
         cmd.Parameters.AddWithValue("target", id);
         cmd.Parameters.AddWithValue("author", User.GetId());
         cmd.Parameters.AddWithValue("message", message);
@@ -103,11 +114,48 @@ public class UsersController : Controller
         return Redirect($"/{id}");
     }
 
+    [Route("wanted")]
+    public async Task<IActionResult> Wanted(string? name, string? corporation, int page = 1)
+    {
+        page--;
+        const int userPerPage = 30;
+        await using var connection = await DataBase.cdf.OpenConnectionAsync();
+        await using var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE wanted = true AND name LIKE @name AND corporation LIKE @corporation;", connection);
+        cmd.Parameters.AddWithValue("name", $"%{name}%");
+        cmd.Parameters.AddWithValue("corporation", $"%{corporation}%");
+        var nUsers = (long)(await cmd.ExecuteScalarAsync() ?? 0);
+        var nPages = (int)MathF.Ceiling(1f * nUsers / userPerPage);
+        page = page < 0 ? 0 : page > nPages ? nPages : page;
+        
+        cmd.CommandText = "SELECT id, name, corporation, wanted_score FROM users WHERE wanted = true AND name LIKE @name AND corporation LIKE @corporation " + 
+                          $"ORDER BY wanted_score DESC LIMIT {userPerPage} OFFSET {page * userPerPage};";
+        await using var reader = await cmd.ExecuteReaderAsync();
+
+        var list = new List<UserModel>();
+        while (await reader.ReadAsync())
+        {
+            list.Add(new UserModel
+            {
+                id = reader.GetInt32(0),
+                name = reader.GetString(1),
+                corporation = reader.GetString(2),
+                wantedScore = reader.GetInt32(3)
+            });
+        }
+
+        ViewBag.name = name;
+        ViewBag.corporation = corporation;
+        ViewBag.page = page + 1;
+        ViewBag.nPages = nPages;
+        ViewBag.nUsers = nUsers;
+        return View(list);
+    }
+
     [AdminAuthorize, Route("{id}/edit"), HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
-        await using var cmd = new MySqlCommand("SELECT message, authorID FROM criminal_record WHERE targetID = @id ORDER BY id DESC;", connection);
+        await using var cmd = new MySqlCommand("SELECT message, author FROM criminal_records WHERE target = @id ORDER BY id DESC;", connection);
         cmd.Parameters.AddWithValue("id", id);
         var folders = new List<Folder>();
         await using (var readerFolder = await cmd.ExecuteReaderAsync())
@@ -168,10 +216,11 @@ public class UsersController : Controller
     {
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
         await using var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE id = @id", connection);
+        cmd.Parameters.Add("id", DbType.Int32);
         int id;
         do
         {
-            cmd.Parameters.AddWithValue("id", id = Random.Shared.Next(1000000, 9999999));
+            cmd.Parameters["id"].Value = id = Random.Shared.Next(1000000, 9999999);
         } while ((long)(await cmd.ExecuteScalarAsync())! > 0);
 
         cmd.CommandText = "INSERT INTO users (id, name, wanted, wanted_score, state, corporation, divers, agent) VALUES "

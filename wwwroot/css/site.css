@@ -37,7 +37,7 @@ nav > img {
     position: absolute;
     z-index: 10;
     margin: 10px;
-    max-width: 448px;
+    max-width: 300px;
 }
 
 nav > hr {

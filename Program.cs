@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text;
-using System.Text.Json;
 using DataBaseCDF;
 using DataBaseCDF.Services;
 using DotNetEnv;
@@ -17,7 +16,8 @@ var key = Environment.GetEnvironmentVariable("KEY_TOKEN");
 if (key == null)
     throw new NullReferenceException("Il est nécessaire d'avoir un KEY_TOKEN .env pour lancer le site web.");
 
-DataBase.cdf = new MySqlDataSource($"Server=localhost;Port=3306;Database=CDF;User=root;Password={Environment.GetEnvironmentVariable("DB_CDF_PASSWORD")};");
+DataBase.cdf = new MySqlDataSource($"Server=localhost;Port=3306;Database=CDF;User={Environment.GetEnvironmentVariable("DB_CDF_USER")};" + 
+                                   $"Password={Environment.GetEnvironmentVariable("DB_CDF_PASS")};");
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRouting(options => { options.LowercaseUrls = true; });

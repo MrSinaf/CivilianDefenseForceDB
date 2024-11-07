@@ -2,7 +2,7 @@
 @model UserModel
 
 @{
-    ViewBag.Title = Model.id;
+    ViewBag.Title = Model.GetStringId();
     var isAdmin = User.IsAdmin();
 }
 
@@ -25,7 +25,10 @@
 <main>
     @if (isAdmin)
     {
-        <p id="lastUpdate">Dernière modification le @Model.lastUpdate.ToShortDateString(), par <a asp-action="Profil" asp-route-id="@Model.agentId">@Model.agentId</a></p>
+        <p id="lastUpdate">
+            Dernière modification le @Model.lastUpdate.ToShortDateString(), par
+            <a asp-action="Profil" asp-route-id="@Model.agentId">@(UserModel.GetStringId(Model.agentId))</a>
+        </p>
     }
     @if (Model.isWanted)
     {

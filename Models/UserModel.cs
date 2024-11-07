@@ -8,8 +8,8 @@ public class UserModel
     public string name { get; set; }
     public State state { get; set; }
     public string corporation { get; set; }
-    public string divers { get; set; }
-    public string agentId { get; set; }
+    public string? divers { get; set; }
+    public int agentId { get; set; }
     public bool isWanted { get; set; }
     public int wantedScore { get; set; }
     public DateTime lastUpdate { get; set; }

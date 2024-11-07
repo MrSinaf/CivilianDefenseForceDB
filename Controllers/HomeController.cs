@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using DataBaseCDF.Models;
 using DataBaseCDF.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +26,8 @@ public class HomeController(JwtTokenService service) : Controller
 
         await using var connection = await DataBase.cdf.OpenConnectionAsync();
         await using var cmd = new MySqlCommand("SELECT id, password, admin, version FROM members WHERE id = @id;", connection);
-        cmd.Parameters.AddWithValue("id", model.id);
-        
+        cmd.Parameters.AddWithValue("id", Regex.Replace(model.id, @"\D", ""));
+
         await using var reader = await cmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())
         {
@@ -42,10 +44,10 @@ public class HomeController(JwtTokenService service) : Controller
                 return RedirectToAction("Index", "Users");
             }
         }
-        
+
         return View(model);
     }
-    
+
     [Route("RGPD")]
     public IActionResult About()
     {
@@ -57,7 +59,7 @@ public class HomeController(JwtTokenService service) : Controller
         HttpContext.Response.Cookies.Delete(COOKIE_NAME);
         return RedirectToAction("Login", "Home");
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
