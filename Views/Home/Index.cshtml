@@ -1,0 +1,49 @@
+﻿@using DataBaseCDF.Services
+@model UserModel[]
+
+@{
+    var userWanted = Model.First();
+}
+
+@section Header
+{
+    <h1>Bonjour <span class="marked">@UserModel.GetStringId(User.GetId())</span>,</h1>
+}
+
+<main>
+    <div id="users-counter">
+        <p id="users-counter__count">000000</p>
+        <p id="users-counter__label">Utilisateurs enregistrés</p>
+    </div>
+    <section id="users-wanted">
+        <h2>Individus les plus recherchés</h2>
+        <div id="users-wanted__container">
+            @foreach (var user in Model)
+            {
+            <div class="users-wanted__card">
+
+                @if (user == null)
+                {
+                    <h3>Aucun.</h3>
+                }
+                else
+                {
+                <h3>@user.name</h3>
+                <p>@user.corporation</p>
+                <p class="users-wanted__card__wanted-score">Priorité : @user.wantedScore.ToString("### ##0")</p>
+                <p>@user.divers</p>
+                <a class="button" href="#">dossier</a>
+                }
+            </div>
+            }
+        </div>
+    </section>
+</main>
+
+@section Scripts
+{
+    <script src="/js/home.js" asp-append-version="true"></script>
+    <script>
+        CountUsers(@ViewBag.nUsers);
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@{
+    var allRouteData = new Dictionary<string, string>();
+    foreach (var value in Context.Request.Query)
+    {
+        allRouteData[value.Key] = value.Value.ToString();
+    }
+}
+
+<nav class="paging">
+    <ul>
+        <li>
+            @if (ViewBag.page > 1)
+            {
+                <a class="paging__button" asp-all-route-data=allRouteData asp-route-page=@(ViewBag.page - 1)>
+                    &lt;
+                </a>
+            }
+            else
+            {
+                <a class="paging__button paging__button--disable">&lt;</a>
+            }
+        </li>
+
+        @for (var i = 0; i < ViewBag.nPages; i++)
+        {
+            if (i > 0 && i < ViewBag.nPages - 1 && (i < ViewBag.page - 3 || i > ViewBag.page + 1))
+                continue;
+
+            <li>
+                @{
+                    var index = i + 1;
+                    if (ViewBag.page == index)
+                    {
+                        <a class="paging__button paging__button--disable">@index</a>
+                    }
+                    else
+                    {
+                        <a class="paging__button" asp-all-route-data=allRouteData asp-route-page=@index>@index</a>
+                    }
+                }
+            </li>
+        }
+
+        <li>
+            @if (ViewBag.page < ViewBag.nPages)
+            {
+                <a class="paging__button" asp-all-route-data=allRouteData asp-route-page=@(ViewBag.page + 1)>&gt;</a>
+            }
+            else
+            {
+                <a class="paging__button paging__button--disable">&gt;</a>
+            }
+        </li>
+    </ul>
+</nav>

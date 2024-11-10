@@ -10,15 +10,15 @@
     <link rel="stylesheet" href="/css/wanted.css" asp-append-version="true"/>
 }
 
-@section Nav
-{
-    <form id="search" asp-controller="Users" asp-action="Wanted" method="get">
-        <input type="text" name="name" placeholder="Recherche par nom" value="@ViewBag.name" autocomplete="off"/>
-        <input type="text" name="corporation" placeholder="Recherche par corporation" value="@ViewBag.corporation" autocomplete="off"/>
-        <button type="submit">Rechercher</button>
-    </form>
-    <p id="nUsers">Résultat : @ViewBag.nUsers @(ViewBag.nUsers < 2 ? "utilisateur" : "utilisateurs")</p>
-}
+@* @section Nav *@
+@* { *@
+@*     <form id="search" asp-controller="OldUsers" asp-action="Wanted" method="get"> *@
+@*         <input type="text" name="name" placeholder="Recherche par nom" value="@ViewBag.name" autocomplete="off"/> *@
+@*         <input type="text" name="corporation" placeholder="Recherche par corporation" value="@ViewBag.corporation" autocomplete="off"/> *@
+@*         <button type="submit">Rechercher</button> *@
+@*     </form> *@
+@*     <p id="nUsers">Résultat : @ViewBag.nUsers @(ViewBag.nUsers < 2 ? "utilisateur" : "utilisateurs")</p> *@
+@* } *@
 
 <main>
     <nav class="pagination">

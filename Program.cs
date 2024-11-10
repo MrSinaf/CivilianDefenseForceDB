@@ -4,6 +4,7 @@ using DataBaseCDF;
 using DataBaseCDF.Services;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.IdentityModel.Tokens;
 using MySqlConnector;
 
@@ -16,7 +17,8 @@ var key = Environment.GetEnvironmentVariable("KEY_TOKEN");
 if (key == null)
     throw new NullReferenceException("Il est nécessaire d'avoir un KEY_TOKEN .env pour lancer le site web.");
 
-DataBase.cdf = new MySqlDataSource($"Server=localhost;Port=3306;Database=CDF;User={Environment.GetEnvironmentVariable("DB_CDF_USER")};" + 
+var db = new MySqlDataSource("Server=localhost;Port=3306;Database=CDF;" +
+                                   $"User={Environment.GetEnvironmentVariable("DB_CDF_USER")};" +
                                    $"Password={Environment.GetEnvironmentVariable("DB_CDF_PASS")};");
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,9 +48,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
             var user = context.Principal!;
 
-            await using var connexion = await DataBase.cdf.OpenConnectionAsync();
+            await using var connexion = await db.OpenConnectionAsync();
             await using var commands = new MySqlCommand("SELECT version FROM members WHERE id = @id;", connexion);
-            commands.Parameters.AddWithValue("id", user.GetId());
+            commands.Parameters.AddWithValue("id", user.GetIdStr());
 
             if (await commands.ExecuteScalarAsync() is int version && version == user.GetVersion())
                 return;
@@ -67,12 +69,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddSingleton(_ => new JwtTokenService(key));
+builder.Services.AddSingleton(_ => db);
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
@@ -82,9 +85,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-app.MapControllerRoute(name: "default", pattern: "{controller=Users}/{action=Index}/{id?}");
+app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-

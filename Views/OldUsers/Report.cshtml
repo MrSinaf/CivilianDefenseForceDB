@@ -4,7 +4,7 @@
 }
 <main>
     <p id="id">@ViewBag.targetId</p>
-    <form asp-controller="Users" asp-action="Report" method="post">
+    <form asp-controller="OldUsers" asp-action="Report" method="post">
         <input type="hidden" name="id" value="@ViewBag.targetId" required/>
         <textarea name="message" placeholder="Report à ajouter..." minlength="10" required></textarea>
         <button type="submit">Envoyer</button>

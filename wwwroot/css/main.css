@@ -1,0 +1,261 @@
+﻿@font-face {
+    font-family: "HANDGOTN";
+    src: url("../fonts/HANDGOTN.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "MADE TOMMY";
+    src: url("../fonts/MADE TOMMY.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "DS-DIGIB";
+    src: url("../fonts/DS-DIGIB.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Top secret";
+    src: url("../fonts/Top Secret.ttf") format("truetype");
+}
+
+* {
+    letter-spacing: 1px;
+}
+
+html {
+    --main-font: "MADE TOMMY";
+    --main-font-size: 18px;
+    --special-font: "HANDGOTN";
+
+    --background-color: #131a21;
+    --background-secondary-color: rgba(255, 255, 255, 0.1);
+    --background-tiertary-color: #143a51;
+
+    --background-input-color: #0a1d29;
+
+    --primary-color: #59653F;
+    --error-color: #ce3c3c;
+
+    --radius: 10px;
+
+    font-family: var(--main-font), sans-serif;
+    font-size: var(--main-font-size);
+    color: white;
+    background: #131a21;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+body > header > a > img {
+    position: absolute;
+    top: 10px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    max-width: 300px;
+}
+
+body > header > hr {
+    margin-top: 60px;
+    margin-bottom: 0;
+}
+
+#main-header {
+    display: flex;
+    padding: 0 20px;
+}
+
+#main-header > div {
+    width: 100%;
+}
+
+#main-header__custom {
+    text-align: center;
+}
+
+#main-header__nav {
+    display: flex;
+    justify-content: right;
+}
+
+#main-header__nav ul {
+    display: flex;
+    list-style: none;
+    height: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+#main-header__nav li {
+    position: relative;
+    margin: 0 2px;
+    width: fit-content;
+    padding: 10px 20px;
+    background: rgb(13, 18, 23);
+    clip-path: polygon(0 0, 0 70%, 20px 100%, 100% 100%, 100% 0);
+    text-align: center;
+    text-transform: uppercase;
+    overflow: hidden;
+}
+
+#main-header__nav li:before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    z-index: -1;
+    transition: top 0.3s ease-in-out;
+}
+
+#main-header__nav li:hover:before {
+    top: 0;
+}
+
+#main-header__nav a {
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#main-header__nav li:hover a:any-link {
+    color: white;
+    transition: color 0.5s ease-in-out;
+}
+
+body > footer {
+    text-align: center;
+}
+
+hr {
+    background: var(--primary-color);
+    width: 100%;
+    height: 10px;
+    border: none;
+}
+
+a:any-link {
+    color: var(--primary-color);
+}
+
+a:hover, a:any-link:hover {
+    cursor: pointer;
+}
+
+form input {
+    color: white;
+    padding: 5px 10px;
+    background: var(--background-input-color);
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    height: 30px;
+    font-family: var(--main-font), sans-serif;
+    font-size: var(--main-font-size);
+}
+
+form input:focus {
+    outline: none;
+}
+
+.button, button {
+    font-family: var(--special-font), sans-serif;
+    font-size: var(--main-font-size);
+    color: white;
+    border: none;
+    text-transform: uppercase;
+    background: var(--primary-color);
+    margin-top: 10px;
+    transition: background-color 0.2s linear;
+    padding: 10px;
+}
+
+.button:hover, button:hover {
+    background: var(--background-input-color);
+    cursor: pointer;
+}
+
+select {
+    font-family: var(--main-font), sans-serif;
+    font-size: var(--main-font-size);
+    letter-spacing: 1px;
+    background: var(--background-input-color);
+    border: none;
+    margin: 0;
+    height: 30px;
+    border-radius: 5px;
+    width: 100px;
+    color: white;
+}
+
+select > option {
+    border: none;
+}
+
+/* ASP.NET CLASS */
+.field-validation-error {
+    display: initial;
+    color: var(--error-color);
+    text-align: center;
+    background: #0a1d29;
+    margin: -5px 15px 5px 15px;
+    padding: 5px 15px;
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+/* CLASS */
+.paging {
+    justify-content: center;
+}
+
+.paging ul {
+    background: var(--background-secondary-color);
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 10px;
+}
+
+a.paging__button {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: white;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+a.paging__button--disable {
+    color: #656565;
+    text-decoration: none;
+}
+
+.marked {
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    html, input, button, select {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 1820px) {
+    #main-header {
+        flex-direction: column-reverse;
+    }
+    
+    body > header > a > img {
+        margin-left: 15px;
+        transform: none;
+    }
+}

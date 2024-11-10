@@ -1,4 +1,8 @@
 ﻿@using DataBaseCDF.Services
+@{
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString()!.ToLower();
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString()!.ToLower();
+}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,43 +10,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/css/main.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/css/@(controllerName)/@(actionName).css" asp-append-version="true"/>
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>
-<nav>
-    <img src="/images/logo.svg" alt="Logo officiel de la CDF"/>
-    <ul>
-        <li>
-            <a asp-controller="Users" asp-action="Index">Accueil</a>
-        </li>
-        @if (User.IsAdmin())
-        {
-            <li>
-                <a asp-controller="Users" asp-action="Create">Ajouter</a>
-            </li>
-            <li>
-                <a asp-controller="Users" asp-action="Members">Membres</a>
-            </li>
-        }
-        <li>
-            <a asp-controller="Users" asp-action="Wanted">Wanted</a>
-        </li>
-        <li>
-            <a asp-controller="Home" asp-action="Logout">Deconnexion</a>
-        </li>
-    </ul>
+<header>
     <hr/>
-    <div>
-        @await RenderSectionAsync("Nav", required: false)
+    <a asp-controller="Home" asp-action="Index">
+        <img src="/images/logo.svg" alt="Logo officiel de la CDF"/>
+    </a>
+    <div id="main-header">
+        <div id="main-header__custom">
+            @await RenderSectionAsync("Header", required: false)
+        </div>
+        <div id="main-header__nav">
+            <nav>
+                <ul>
+                    @if (User.IsAdmin())
+                    {
+                        <li>
+                            <a asp-controller="Home" asp-action="">Créer</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Home" asp-action="">Membres</a>
+                        </li>
+                    }
+                    @if (User.Identity is { IsAuthenticated: true })
+                    {
+                        <li>
+                            <a asp-controller="Users" asp-action="Index">Utilisateurs</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Home" asp-action="">Recherchés</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Members" asp-action="Logout">Se déconnecter</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
     </div>
-</nav>
+</header>
 @RenderBody()
 <footer>
     <hr/>
     <p>
-        &copy;CDF - @DateTime.UtcNow.Year 〉Développé par <a href="https://sinafproduction.xyz" target="_blank">MrSinaf</a>
-        〉<a asp-controller="Home"asp-action="About">RGPD</a>
+        Développé par <a href="https://sinafproduction.xyz" target="_blank">MrSinaf</a> 〉CDF - @DateTime.UtcNow.Year 〉<a asp-controller="Home" asp-action="About">RGPD</a>
     </p>
 </footer>
 @await RenderSectionAsync("Scripts", required: false)

@@ -1,0 +1,64 @@
+﻿body > header, body > footer {
+    display: none;
+}
+
+main {
+    background: #143a51;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#container {
+    position: relative;
+    background: rgb(15, 44, 62);
+    padding: 20px;
+    margin: 10px;
+    border-radius: var(--radius);
+    max-width: 450px;
+    width: 100%;
+}
+
+#container > img {
+    padding: 10px;
+}
+
+#container > form {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+}
+
+#container button {
+    position: absolute;
+    clip-path: polygon(20px 0, 0 20px, 0 100%, 100% 100%, 100% 0);
+    border-radius: 0 0 10px;
+    height: 40px;
+    padding: 0 30px;
+    right: 0;
+    bottom: 0;
+}
+
+#about {
+    position: absolute;
+    left: 20px;
+    bottom: 15px;
+    font-size: 0.8em;
+    color: grey;
+}
+
+#error {
+    color: var(--error-color);
+    text-align: center;
+}
+
+@media (max-width: 1025px) {
+    #about {
+        position: static;
+        text-align: center;
+        margin: 0;
+    }
+}

@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="/css/profil.css" asp-append-version="true"/>
 }
 
-@section Nav
-{
-    <header>
-        <h1>@Model.name</h1>
-        <p id="id">@Model.GetStringId()</p>
-        <p id="state" class="@(Model.state switch { UserModel.State.Ally => "green", UserModel.State.Hostile => "red", _ => "grey" })">
-            [@UserModel.StateToString(Model.state)]
-        </p>
-    </header>
-}
+@* @section Nav *@
+@* { *@
+@*     <header> *@
+@*         <h1>@Model.name</h1> *@
+@*         <p id="id">@Model.GetStringId()</p> *@
+@*         <p id="state" class="@(Model.state switch { UserModel.State.Ally => "green", UserModel.State.Hostile => "red", _ => "grey" })"> *@
+@*             [@UserModel.StateToString(Model.state)] *@
+@*         </p> *@
+@*     </header> *@
+@* } *@
 
 <main>
     @if (isAdmin)
@@ -58,17 +58,17 @@
         </div>
     </div>
     <div id="buttons">
-        <a asp-controller="Users" asp-action="Report" asp-route-id="@Model.id">Ajouter un report</a>
+        <a asp-controller="OldUsers" asp-action="Report" asp-route-id="@Model.id">Ajouter un report</a>
         @if (isAdmin)
         {
-            <a asp-controller="Users" asp-action="Edit" asp-route-id="@Model.id">Modifier</a>
+            <a asp-controller="OldUsers" asp-action="Edit" asp-route-id="@Model.id">Modifier</a>
             @if (Model.isMember)
             {
-                <a asp-controller="Users" asp-action="Member" asp-route-id="@Model.id">Paramètre du membre</a>
+                <a asp-controller="OldUsers" asp-action="Member" asp-route-id="@Model.id">Paramètre du membre</a>
             }
             else
             {
-                <a asp-controller="Users" asp-action="Member" asp-route-id="@Model.id">Définir membre</a>
+                <a asp-controller="OldUsers" asp-action="Member" asp-route-id="@Model.id">Définir membre</a>
             }
         }
     </div>

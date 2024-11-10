@@ -1,68 +1,44 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using DataBaseCDF.Models;
-using DataBaseCDF.Services;
+﻿using DataBaseCDF.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 
 namespace DataBaseCDF.Controllers;
 
-public class HomeController(JwtTokenService service) : Controller
+public class HomeController(MySqlDataSource db) : Controller
 {
-    private const string COOKIE_NAME = "jwt";
-
-    [Route("login"), HttpGet]
-    public IActionResult Login()
+    [Authorize]
+    public async Task<IActionResult> Index()
     {
-        return View(new LoginModel());
-    }
+        await using var connection = await db.OpenConnectionAsync();
+        await using var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE TRUE;", connection);
+        ViewBag.nUsers = (long)(await cmd.ExecuteScalarAsync() ?? 0);
 
-    [Route("login"), HttpPost]
-    public async Task<IActionResult> Login(LoginModel model)
-    {
-        if (!ModelState.IsValid)
-            return View(model);
-
-        await using var connection = await DataBase.cdf.OpenConnectionAsync();
-        await using var cmd = new MySqlCommand("SELECT id, password, admin, version FROM members WHERE id = @id;", connection);
-        cmd.Parameters.AddWithValue("id", Regex.Replace(model.id, @"\D", ""));
-
-        await using var reader = await cmd.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
+        cmd.CommandText = "SELECT id, name, wanted_score, corporation, divers FROM users WHERE wanted = TRUE ORDER BY wanted_score DESC LIMIT 3;";
+        var array = new UserModel[3];
+        var i = 0;
+        await using (var reader = await cmd.ExecuteReaderAsync())
         {
-            var member = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2), reader.GetInt32(3));
-            if (BCrypt.Net.BCrypt.Verify(model.password, member.password))
+            while (await reader.ReadAsync())
             {
-                var token = service.GenerateToken(member);
-                HttpContext.Response.Cookies.Append(COOKIE_NAME, token, new CookieOptions
+                array[i++] = new UserModel
                 {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
-                return RedirectToAction("Index", "Users");
+                    id = reader.GetInt32(0), name = reader.GetString(1), wantedScore = reader.GetInt32(2), corporation = reader.GetString(3), divers = reader.GetString(4)
+                };
             }
         }
 
-        return View(model);
+        // Place le plus recherché au centre :
+        var topWanted = array[0];
+        array[0] = array[1];
+        array[1] = topWanted;
+
+        return View(array);
     }
 
-    [Route("RGPD")]
+    [Route("about")]
     public IActionResult About()
     {
         return View();
-    }
-
-    public IActionResult Logout()
-    {
-        HttpContext.Response.Cookies.Delete(COOKIE_NAME);
-        return RedirectToAction("Login", "Home");
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

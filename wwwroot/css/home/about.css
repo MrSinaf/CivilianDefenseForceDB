@@ -1,0 +1,11 @@
+﻿header > h1 {
+    margin-bottom: 0;
+}
+
+header > p {
+    margin: 0 0 0 20px;
+}
+
+main {
+    margin: 10px 60px;
+}

@@ -8,19 +8,19 @@
     <link rel="stylesheet" href="/css/edit.css" asp-append-version="true"/>
 }
 
-@section Nav
-{
-    <header>
-        <h1>@(create ? "Création" : "Modification") d'un dossier</h1>
-    </header>
-}
+@* @section Nav *@
+@* { *@
+@*     <header> *@
+@*         <h1>@(create ? "Création" : "Modification") d'un dossier</h1> *@
+@*     </header> *@
+@* } *@
 
 <main>
     @if (!create)
     {
         <p class="id">@($"{Model.id:CDF-###-####}")</p>
     }
-    <form method="post" asp-controller="Users" asp-action="@(create ? "Create" : "Edit")">
+    <form method="post" asp-controller="OldUsers" asp-action="@(create ? "Create" : "Edit")">
         <input type="hidden" name="id" value="@Model.id" required/>
         <div class="infos__head">
             <label for="name">Nom</label>

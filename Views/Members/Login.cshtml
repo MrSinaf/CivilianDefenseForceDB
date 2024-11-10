@@ -1,0 +1,22 @@
+﻿@model LoginModel
+<main>
+    <hr/>
+    <div id="container">
+        <img src="images/logo.svg" alt="Logo officiel CDF"/>
+        @if (ViewBag.error != null)
+        {
+            <p id="error">@ViewBag.error</p>
+        }
+        <form asp-controller="Members" asp-action="Login" method="post">
+            <input asp-for="id"/>
+            @Html.ValidationMessage("id")
+            <input asp-for="password"/>
+            @Html.ValidationMessage("password")
+            <p id="about">consulter notre <a asp-controller="Home" asp-action="About">RGPD</a></p>
+            <button type="submit">Connexion</button>
+        </form>
+    </div>
+    <hr/>
+</main>
+<footer id="footer">
+</footer>

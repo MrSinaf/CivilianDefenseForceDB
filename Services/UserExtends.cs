@@ -4,8 +4,11 @@ namespace DataBaseCDF.Services;
 
 public static class UserExtends
 {
-    public static string GetId(this ClaimsPrincipal user)
+    public static string GetIdStr(this ClaimsPrincipal user)
         => user.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "";
+    
+    public static int GetId(this ClaimsPrincipal user)
+        => int.Parse(user.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "");
 
     public static bool IsAdmin(this ClaimsPrincipal user)
         => bool.TryParse(user.Claims.FirstOrDefault(c => c.Type == "admin")?.Value, out var isAdmin) && isAdmin;

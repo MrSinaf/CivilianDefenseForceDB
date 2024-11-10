@@ -1,0 +1,81 @@
+﻿#users-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px auto 0 auto;
+}
+
+#users-counter__count {
+    font-family: "DS-DIGIB", sans-serif;
+    font-size: 70px;
+    letter-spacing: 5px;
+    text-align: center;
+    margin: 15px 0;
+    width: 300px;
+    background: black;
+}
+
+#users-counter__label {
+    text-transform: uppercase;
+    margin: -10px 0 0 0;
+}
+
+#users-wanted > h2 {
+    text-align: center;
+    margin: 50px 0 0 0;
+    text-transform: uppercase;
+}
+
+#users-wanted__container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+
+.users-wanted__card:nth-child(2) {
+    position: relative;
+    top: 30px
+}
+
+.users-wanted__card {
+    width: 350px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin: 10px 15px;
+    transition: scale 0.2s;
+}
+
+.users-wanted__card:hover {
+    scale: 1.1;
+}
+
+.users-wanted__card p {
+    text-align: center;
+}
+.users-wanted__card p:last-of-type {
+    background: black;
+    margin-bottom: 10px;
+}
+
+
+.users-wanted__card h3 {
+    background: #a90000;
+    clip-path: polygon(0 0, 20px 100%, calc(100% - 20px) 100%, 100% 0);
+    padding: 5px 0;
+    margin: 0;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.users-wanted__card__wanted-score {
+    font-size: 35px;
+    color: red;
+}
+
+.users-wanted__card > a:any-link {
+    color: white;
+    text-decoration: none;
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 10px, calc(100% - 10px) 0);
+    padding: 10px;
+    border-radius: 0 10px 10px;
+}
