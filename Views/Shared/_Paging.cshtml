@@ -6,7 +6,7 @@
     }
 }
 
-<nav class="paging">
+<nav class="paging" style="display: @(ViewBag.nPages == 1 ? "none" : "initial");">
     <ul>
         <li>
             @if (ViewBag.page > 1)

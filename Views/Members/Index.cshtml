@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<UserModel>
 
 @{
-    ViewBag.Title = "Utilisateurs";
+    ViewBag.Title = "Membres";
 }
 
 @section Head
@@ -11,21 +11,15 @@
 
 @section Header
 {
-    <h1>Liste des utilisateurs</h1>
+    <h1>Liste des membres</h1>
 }
 
 <main>
     <div>
         <div>
-            <form asp-controller="Users" asp-action="Index" method="get">
+            <form asp-controller="Users" asp-action="Wanted" method="get">
                 <input type="text" name="name" placeholder="Nom"/>
                 <input type="text" name="corporation" placeholder="Corporation"/>
-                <select name="state">
-                    <option value="null" selected="@(ViewBag.state == null ? "selected" : null)">Tous</option>
-                    <option value="0" selected="@(ViewBag.state == 0 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Ally)</option>
-                    <option value="1" selected="@(ViewBag.state == 1 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Neutral)</option>
-                    <option value="2" selected="@(ViewBag.state == 2 ? "selected" : null)">@UserModel.StateToString(UserModel.State.Hostile)</option>
-                </select>
                 <button type="submit">Rechercher</button>
             </form>
             @await Html.PartialAsync("_Paging")
@@ -34,20 +28,18 @@
             <thead>
             <tr>
                 <th>Nom</th>
-                <th>Statut</th>
-                <th>Recherché</th>
                 <th>Corporation</th>
+                <th>admin</th>
                 <th>Dossier</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var user in Model)
             {
-                <tr class="@(user.isWanted ? "user--wanted" : "")">
+                <tr>
                     <td>@user.name</td>
-                    <td>@UserModel.StateToString(user.state)</td>
-                    <td>@(user.isWanted ? "oui" : "non")</td>
                     <td>@user.corporation</td>
+                    <td>@(user.isAdmin ? "oui" : "non")</td>
                     <th>
                         <a asp-controller="Users" asp-action="Folder" asp-route-id="@user.id">Ouvrir</a>
                     </th>

@@ -13,4 +13,16 @@
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
       <PackageReference Include="MySqlConnector" Version="2.3.7" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Member.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Members.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Profil.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Report.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldUsers\Wanted.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldHome\About.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OldHome\Login.cshtml" />
+    </ItemGroup>
 </Project>

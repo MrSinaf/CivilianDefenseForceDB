@@ -2,13 +2,13 @@
 <main>
     <hr/>
     <div id="container">
-        <img src="images/logo.svg" alt="Logo officiel CDF"/>
+        <img src="/images/logo.svg" alt="Logo officiel CDF"/>
         @if (ViewBag.error != null)
         {
             <p id="error">@ViewBag.error</p>
         }
         <form asp-controller="Members" asp-action="Login" method="post">
-            <input asp-for="id"/>
+            <input asp-for="id" placeholder="CDF-###-###"/>
             @Html.ValidationMessage("id")
             <input asp-for="password"/>
             @Html.ValidationMessage("password")

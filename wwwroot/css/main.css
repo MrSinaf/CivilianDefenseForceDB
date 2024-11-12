@@ -186,7 +186,7 @@ select {
     letter-spacing: 1px;
     background: var(--background-input-color);
     border: none;
-    margin: 0;
+    margin: 5px;
     height: 30px;
     border-radius: 5px;
     width: 100px;
@@ -195,6 +195,18 @@ select {
 
 select > option {
     border: none;
+}
+
+label.toggle {
+    background: var(--background-input-color);
+    border-radius: 5px;
+    padding: 7px;
+    margin: 5px;
+}
+
+label.toggle > input {
+    width: 16px;
+    height: 16px;
 }
 
 /* ASP.NET CLASS */
@@ -206,6 +218,7 @@ select > option {
     margin: -5px 15px 5px 15px;
     padding: 5px 15px;
     border-radius: 0 0 var(--radius) var(--radius);
+    border-top: rgba(0, 0, 0, 0.3) 2px solid;
 }
 
 .field-validation-valid {

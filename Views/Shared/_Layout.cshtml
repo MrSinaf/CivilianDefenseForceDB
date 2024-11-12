@@ -8,11 +8,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"] [CDF]</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/main.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/css/@(controllerName)/@(actionName).css" asp-append-version="true"/>
     @await RenderSectionAsync("Head", required: false)
+    <link rel="stylesheet" href="/css/@(controllerName)/@(actionName).css" asp-append-version="true"/>
 </head>
 <body>
 <header>
@@ -30,10 +30,10 @@
                     @if (User.IsAdmin())
                     {
                         <li>
-                            <a asp-controller="Home" asp-action="">Créer</a>
+                            <a asp-controller="Users" asp-action="Create">Créer</a>
                         </li>
                         <li>
-                            <a asp-controller="Home" asp-action="">Membres</a>
+                            <a asp-controller="Members" asp-action="Index">Membres</a>
                         </li>
                     }
                     @if (User.Identity is { IsAuthenticated: true })
@@ -42,7 +42,7 @@
                             <a asp-controller="Users" asp-action="Index">Utilisateurs</a>
                         </li>
                         <li>
-                            <a asp-controller="Home" asp-action="">Recherchés</a>
+                            <a asp-controller="Users" asp-action="Wanted">Recherchés</a>
                         </li>
                         <li>
                             <a asp-controller="Members" asp-action="Logout">Se déconnecter</a>

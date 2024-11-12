@@ -29,9 +29,7 @@ public class HomeController(MySqlDataSource db) : Controller
         }
 
         // Place le plus recherché au centre :
-        var topWanted = array[0];
-        array[0] = array[1];
-        array[1] = topWanted;
+        (array[0], array[1]) = (array[1], array[0]);
 
         return View(array);
     }
