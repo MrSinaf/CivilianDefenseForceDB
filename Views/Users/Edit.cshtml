@@ -4,13 +4,22 @@
     ViewBag.Title = "Création";
 }
 
+@section Head
+{
+    <link rel="stylesheet" href="/css/users/edit.css" asp-append-version="true"/>
+}
+
 <main>
-    <h1>Création d'un utilisateur</h1>
+    <h1>@(ViewBag.edit ? "Edition d'un utilisateur" : "Création d'un utilisateur")</h1>
     @if (ViewBag.error != null)
     {
         <p id="error">@ViewBag.error</p>
     }
-    <form asp-controller="Users" asp-action="Create" method="post">
+    <form asp-controller="Users" asp-action="@(ViewBag.edit ? "Edit" : "Create")" method="post">
+        @if (ViewBag?.edit)
+        {
+            <input type="hidden" name="id" value="@Model.id"/>
+        }
         <input asp-for="name" placeholder="Nom de l'utilisateur"/>
         @Html.ValidationMessage("name")
         <div>

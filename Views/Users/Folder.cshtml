@@ -1,12 +1,37 @@
-﻿@model UserModel;
+﻿@using DataBaseCDF.Services
+@model FolderModel;
 
 @{
-    ViewBag.Title = Model.GetStringId();
+    ViewBag.Title = Model.user.GetStringId();
+    var isAdmin = User.IsAdmin();
 }
 
 <main>
-    <p>@Model.GetStringId()</p>
-    <div>
-        
+    <div id="card">
+        <p id="id">@Model.user.GetStringId()</p>
+        <h1>@Model.user.name</h1>
+        <h2>@Model.user.corporation</h2>
+        <div id="complementary">
+            <p>@Model.user.divers</p>
+            <p>@(Model.user.isWanted ? "Non recherché." : $"Activement recherché : {Model.user.wantedScore} score")</p>
+        </div>
+        <h3>Casier</h3>
+        <div id="criminal-record__container">
+            @foreach (var record in Model.records)
+            {
+                <div class="criminal-record">
+                    <p>@record.message</p>
+                    @if (isAdmin)
+                    {
+                        <p>@UserModel.GetStringId(record.authorId)</p>
+                    }
+                </div>
+            }
+        </div>
+        <div id="buttons">
+            <a id="rapport" class="button">Ajouter un rapport</a>
+            <a asp-action="Edit" asp-route-id="@Model.user.id">Modifier</a>
+            <a>Définir membre</a>
+        </div>
     </div>
 </main>

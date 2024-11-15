@@ -1,0 +1,18 @@
+﻿@using DataBaseCDF.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<nav id="subNav">
+    <ul>
+        @if (User.IsAdmin())
+        {
+            <li>
+                <a class="button" asp-controller="Lists" asp-action="Members">Membres</a>
+            </li>
+        }
+        <li>
+            <a class="button" asp-controller="Lists" asp-action="Users">Utilisateurs</a>
+        </li>
+        <li>
+            <a class="button" asp-controller="Lists" asp-action="Wanted">Recherchés</a>
+        </li>
+    </ul>
+</nav>

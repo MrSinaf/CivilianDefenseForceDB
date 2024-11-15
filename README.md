@@ -7,4 +7,4 @@ peu dans un style judiciaire.
 C'est un projet, où je me suis surtout amusé à le réaliser, je pense petit à petit y ajouter des features demander par le propriétaire du site, mais aussi à rendre sa 
 structure un peu plus propre (le tout étant un peu centralisé au même endroit).
 
-Site disponible ici : [cdf-panel.com](https://security.cdf-panel.com)
+Site disponible ici : [civilian-defense-force.fr](https://civilian-defense-force.fr/)

@@ -6,7 +6,7 @@
 
 @section Head
 {
-    <link rel="stylesheet" href="/css/users/table.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="/css/lists/table.css" asp-append-version="true"/>
 }
 
 @section Header
@@ -15,9 +15,10 @@
 }
 
 <main>
+    @await Html.PartialAsync("_Nav")
     <div>
         <div>
-            <form asp-controller="Users" asp-action="Wanted" method="get">
+            <form asp-controller="Lists" asp-action="Wanted" method="get">
                 <input type="text" name="name" placeholder="Nom"/>
                 <input type="text" name="corporation" placeholder="Corporation"/>
                 <button type="submit">Rechercher</button>

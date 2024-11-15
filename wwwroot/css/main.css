@@ -27,7 +27,7 @@ html {
     --main-font-size: 18px;
     --special-font: "HANDGOTN";
 
-    --background-color: #131a21;
+    --background-color: #21262d;
     --background-secondary-color: rgba(255, 255, 255, 0.1);
     --background-tiertary-color: #143a51;
 
@@ -57,6 +57,7 @@ body > header > a > img {
     margin-left: 50%;
     transform: translateX(-50%);
     max-width: 300px;
+    z-index: 10;
 }
 
 body > header > hr {

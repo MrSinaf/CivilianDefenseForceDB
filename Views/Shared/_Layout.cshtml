@@ -32,17 +32,14 @@
                         <li>
                             <a asp-controller="Users" asp-action="Create">Créer</a>
                         </li>
-                        <li>
-                            <a asp-controller="Members" asp-action="Index">Membres</a>
-                        </li>
                     }
                     @if (User.Identity is { IsAuthenticated: true })
                     {
                         <li>
-                            <a asp-controller="Users" asp-action="Index">Utilisateurs</a>
+                            <a asp-controller="Lists" asp-action="Users">Utilisateurs</a>
                         </li>
                         <li>
-                            <a asp-controller="Users" asp-action="Wanted">Recherchés</a>
+                            <a style="color: #810000">Rapports</a>
                         </li>
                         <li>
                             <a asp-controller="Members" asp-action="Logout">Se déconnecter</a>

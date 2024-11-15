@@ -15,7 +15,7 @@ public class UserModel
     public DateTime lastUpdate { get; set; }
     public bool isAdmin;
     public bool isMember;
-    public Folder[] folders;
+    public CriminalRecord[] folders;
 
     public static string StateToString(State state) => state switch
     {

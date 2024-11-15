@@ -1,6 +1,6 @@
 ﻿namespace DataBaseCDF.Models;
 
-public class Folder
+public class CriminalRecord
 {
     public string message;
     public int authorId;

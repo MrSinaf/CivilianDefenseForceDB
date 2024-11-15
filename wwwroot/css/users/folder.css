@@ -1,0 +1,87 @@
+﻿#card {
+    position: relative;
+    margin: 60px auto;
+    max-width: 700px;
+    width: 100%;
+    background: var(--background-secondary-color);
+    border-radius: 10px;
+}
+
+#id {
+    position: absolute;
+    padding: 5px 10px;
+    margin: 0;
+    top: -25px;
+    background: var(--primary-color);
+    clip-path: polygon(10px 0, 0 10px, 0 100%, 100% 100%, 100% 0);
+}
+
+h1 {
+    text-align: center;
+    background: var(--primary-color);
+    border-radius: 0 10px 0 0;
+    margin-bottom: 0;
+}
+
+h2 {
+    text-align: center;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.4);
+    font-size: 22px;
+}
+
+#complementary {
+    margin: 0 20px;
+}
+
+h3 {
+    background: var(--background-color);
+    margin-bottom: 0;
+    padding: 5px 10px;
+    border-bottom: 2px rgba(0, 0, 0, 0.35) solid;
+    width: fit-content;
+    border-top-right-radius: 5px;
+}
+
+#criminal-record__container {
+    margin:  0;
+    padding: 5px;
+    background: var(--background-color);
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.criminal-record {
+    margin-bottom: 5px;
+}
+
+.criminal-record p {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    margin: 0;
+}
+
+.criminal-record > p:last-child {
+    width: fit-content;
+    border-radius: 0;
+    margin-left: 5px;
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+#buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+}
+
+#buttons > * {
+    margin: 0;
+}
+
+#rapport {
+    clip-path: polygon(0 0, 0 100%, calc(100% - 10px) 100%, 100% calc(100% - 10px),  100% 0);
+}
