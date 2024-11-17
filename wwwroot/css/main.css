@@ -148,7 +148,7 @@ a:hover, a:any-link:hover {
     cursor: pointer;
 }
 
-form input {
+form input, textarea {
     color: white;
     padding: 5px 10px;
     background: var(--background-input-color);
@@ -160,11 +160,12 @@ form input {
     font-size: var(--main-font-size);
 }
 
-form input:focus {
+form input:focus, textarea {
     outline: none;
+    resize: none;
 }
 
-.button, button {
+.button:any-link, button {
     font-family: var(--special-font), sans-serif;
     font-size: var(--main-font-size);
     color: white;
@@ -174,6 +175,7 @@ form input:focus {
     margin-top: 10px;
     transition: background-color 0.2s linear;
     padding: 10px;
+    text-decoration: none;
 }
 
 .button:hover, button:hover {
@@ -263,7 +265,7 @@ a.paging__button--disable {
     }
 }
 
-@media (max-width: 1820px) {
+@media (max-width: 1620px) {
     #main-header {
         flex-direction: column-reverse;
     }

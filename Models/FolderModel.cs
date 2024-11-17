@@ -1,3 +1,3 @@
 ﻿namespace DataBaseCDF.Models;
 
-public record class FolderModel(UserModel user, IEnumerable<CriminalRecord> records);
+public record class FolderModel(UserModel user, CriminalRecord[] records);

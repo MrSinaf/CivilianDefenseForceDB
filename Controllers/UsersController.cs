@@ -91,24 +91,26 @@ public class UsersController(MySqlDataSource db) : Controller
 			ViewBag.error = $"Aucun utilisateur avec l'id {model.id} a été trouvé.";
 			return View(model);
 		}
-		
-		cmd.CommandText = "UPDATE users SET name = @name, wanted = @wanted, wanted_score = @score, state = @state, corporation = @corporation, divers = @divers WHERE id = @id;";
+
+		cmd.CommandText = "UPDATE users SET name = @name, wanted = @wanted, wanted_score = @score, state = @state, corporation = @corporation, divers = @divers " +
+						  ", agent = @agent, last_update = CURRENT_TIMESTAMP WHERE id = @id;";
 		cmd.Parameters.AddWithValue("name", model.name);
 		cmd.Parameters.AddWithValue("wanted", model.wanted);
 		cmd.Parameters.AddWithValue("score", model.wantedScore);
 		cmd.Parameters.AddWithValue("state", model.state);
 		cmd.Parameters.AddWithValue("corporation", model.corporation);
 		cmd.Parameters.AddWithValue("divers", model.divers);
+		cmd.Parameters.AddWithValue("agent", User.GetId());
 		try
 		{
 			await cmd.ExecuteNonQueryAsync();
 		}
-		catch(Exception ex)
+		catch (Exception ex)
 		{
 			ViewBag.error = $"Impossible de continuer : {ex.Message}";
 			return View(model);
 		}
-		
+
 		return Redirect($"/{model.id}");
 	}
 
@@ -123,8 +125,10 @@ public class UsersController(MySqlDataSource db) : Controller
 			while (await readerRecords.ReadAsync())
 				records.Add(new CriminalRecord { message = readerRecords.GetString(0), authorId = readerRecords.GetInt32(1) });
 
-		cmd.CommandText = "SELECT id, wanted, wanted_score, corporation, divers, last_update, agent, name FROM users WHERE id = @id;";
+		cmd.CommandText = "SELECT TRUE FROM members WHERE id = @id;";
+		ViewBag.isMember = (int)(await cmd.ExecuteScalarAsync() ?? 0) == 1;
 
+		cmd.CommandText = "SELECT id, wanted, wanted_score, corporation, divers, last_update, agent, name, state FROM users WHERE id = @id;";
 		await using var reader = await cmd.ExecuteReaderAsync();
 		if (await reader.ReadAsync())
 		{
@@ -137,10 +141,38 @@ public class UsersController(MySqlDataSource db) : Controller
 				divers = reader.GetString(4),
 				lastUpdate = reader.GetDateTime(5),
 				agentId = reader.GetInt32(6),
-				name = reader.GetString(7)
-			}, records));
+				name = reader.GetString(7),
+				state = (UserModel.State)reader.GetInt32(8)
+			}, records.ToArray()));
 		}
 
 		return NotFound();
+	}
+
+	[Route("/{id:int}/report"), HttpGet]
+	public IActionResult Report(int id) => View(new ReportModel { id = id });
+
+	[Route("/{id:int}/report"), HttpPost]
+	public async Task<IActionResult> Report(ReportModel model)
+	{
+		if (!ModelState.IsValid)
+			return View(model);
+		
+		await using var connection = await db.OpenConnectionAsync();
+		await using var cmd = new MySqlCommand("SELECT TRUE FROM users WHERE id = @target;", connection);
+		cmd.Parameters.AddWithValue("target", model.id);
+		
+		if ((int)(await cmd.ExecuteScalarAsync() ?? 0) == 0)
+		{
+			ViewBag.error = $"Aucun utilisateur {UserModel.GetStringId(model.id)} n'a été trouvé !";
+			return View(model);
+		}
+
+		cmd.CommandText = "INSERT INTO criminal_records (target, message, author)  VALUES (@target, @message, @author);";
+		cmd.Parameters.AddWithValue("author", User.GetId());
+		cmd.Parameters.AddWithValue("message", model.content);
+		await cmd.ExecuteNonQueryAsync();
+
+		return Redirect($"/{model.id}");
 	}
 }

@@ -1,0 +1,36 @@
+﻿@model MemberModel;
+
+@{
+    ViewBag.Title = "Membre";
+}
+
+@section Head
+
+{
+    <link rel="stylesheet" href="/css/members/edit.css" asp-append-version="true"/>
+}
+
+<main>
+    <h1>@(ViewBag.exist ? "Modification" : "Création") d'un membre</h1>
+    @if (ViewBag.error != null)
+    {
+        <p id="error">@ViewBag.error</p>
+    }
+    <form asp-controller="Members" asp-action="Edit" method="post">
+        <input type="hidden" name="id" value="@Model.id"/>
+        <div>
+            <div class="input-and-message-container">
+                <input asp-for="password" placeholder="Mot de passe" autocomplete="new-password"/>
+                @Html.ValidationMessage("password")
+            </div>
+            <label class="toggle">Admin <input asp-for="isAdmin"/></label>
+        </div>
+        <div id="buttons">
+            <button type="submit">Envoyer</button>
+            @if (ViewBag.exist)
+            {
+                <a class="button" asp-action="Remove" asp-route-id="@Model.id">Supprimer</a>
+            }
+        </div>
+    </form>
+</main>

@@ -6,6 +6,7 @@
 }
 
 @section Header
+
 {
     <h1>Bonjour <span class="marked">@UserModel.GetStringId(User.GetId())</span>,</h1>
 }
@@ -20,27 +21,28 @@
         <div id="users-wanted__container">
             @foreach (var user in Model)
             {
-            <div class="users-wanted__card">
+                <div class="users-wanted__card">
 
-                @if (user == null)
-                {
-                    <h3>Aucun</h3>
-                }
-                else
-                {
-                <h3>@user.name</h3>
-                <p>@user.corporation</p>
-                <p class="users-wanted__card__wanted-score">Priorité : @user.wantedScore.ToString("### ##0")</p>
-                <p>@user.divers</p>
-                <a class="button" href="#">dossier</a>
-                }
-            </div>
+                    @if (user == null)
+                    {
+                        <h3>Aucun</h3>
+                    }
+                    else
+                    {
+                        <h3>@user.name</h3>
+                        <p>@user.corporation</p>
+                        <p class="users-wanted__card__wanted-score">Priorité : @user.wantedScore.ToString("### ##0")</p>
+                        <p>@user.divers</p>
+                        <a class="button" asp-controller="Users" asp-action="Folder" asp-route-id="@user.id">dossier</a>
+                    }
+                </div>
             }
         </div>
     </section>
 </main>
 
 @section Scripts
+
 {
     <script src="/js/home.js" asp-append-version="true"></script>
     <script>

@@ -1,0 +1,21 @@
+﻿@model ReportModel
+
+@{
+    ViewBag.Title = "Rapport";
+}
+
+<main>
+    <div>
+        <h1>Rapport pour @UserModel.GetStringId(Model.id)</h1>
+        @if (ViewBag.error != null)
+        {
+            <p id="error">@ViewBag.error</p>
+        }
+        <form asp-controller="Users" asp-action="Report" method="post">
+            <input type="hidden" name="id" value="@Model.id"/>
+            <textarea asp-for="content" placeholder="Rapport sur l'individu @UserModel.GetStringId(Model.id)"></textarea>
+            @Html.ValidationMessage("content")
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+</main>
